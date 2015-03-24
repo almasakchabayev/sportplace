@@ -1,0 +1,23 @@
+add Payment type to Place
+mb change double Price to List<Price>, where Price will have a type (per hour, per half hour) and some discount strategies
+add Ratings to Place
+contacts Map fine or not?
+Address lines or street&house number?
+need to make sports predefined?
+need to make contacts keys predefined? i.e. work, home, etc?
+
+Add timetable class
+
+how to work with images
+
+add payment class and add payment field to booking
+
+only superAdmin can add sports
+
+
+
+
+
+
+do I add validation in classes?
+why do I need abstract DAO abstract class if I just omplement?

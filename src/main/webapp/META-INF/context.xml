@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context copyXML="true" path="/sportplacedb" allowCasualMultipartParsing="true">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <Resource name="jdbc/SportplaceDB"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              testWhileIdle="true"
+              testOnBorrow="true"
+              testOnReturn="false"
+              validationQuery="SELECT 1"
+              validationInterval="30000"
+              timeBetweenEvictionRunsMillis="30000"
+              maxActive="100"
+              minIdle="10"
+              maxWait="10000"
+              initialSize="10"
+              removeAbandoned="true"
+              removeAbandonedTimeout="60"
+              username="almas"
+              password="Q1w2e3r4t5"
+              driverClassName="org.postgresql.Driver"
+              url = "jdbc:postgresql://localhost/sportplacedb"
+              jmxEnabled="true"
+              useUnicode="true"
+              characterEncoding="utf-8"
+              characterSetResults="utf8"/>
+    <!-- Uncomment this to disable session persistence across Tomcat restarts -->
+    <!--
+    <Manager pathname="" />
+    -->
+
+    <!-- Uncomment this to enable Comet connection tacking (provides events
+         on session expiration as well as webapp lifecycle) -->
+    <!--
+    <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
+    -->
+
+</Context>
