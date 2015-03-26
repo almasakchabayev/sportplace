@@ -20,6 +20,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1201-jdbc41</version>
+            <!--TODO: loook at other options to pool-->
             <scope>provided</scope>
         </dependency>
         <dependency>

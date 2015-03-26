@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        CustomerDAO customerDAO = DAOFactory.getFactory().getCustomerDAO("PostgreSql");
+        CustomerDAO customerDAO = DAOFactory.getFactory().getCustomerDAO();
         customerDAO.insert(customer);
     }
 

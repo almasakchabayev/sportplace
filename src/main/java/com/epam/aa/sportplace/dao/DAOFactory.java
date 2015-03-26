@@ -11,5 +11,5 @@ public interface DAOFactory {
             default : return null;
         }
     }
-    public CustomerDAO getCustomerDAO(String type);
+    public CustomerDAO getCustomerDAO();
 }

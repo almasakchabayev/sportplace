@@ -20,4 +20,5 @@ only superAdmin can add sports
 
 
 do I add validation in classes?
-why do I need abstract DAO abstract class if I just omplement?
+
+protection against sql injections and csrf?

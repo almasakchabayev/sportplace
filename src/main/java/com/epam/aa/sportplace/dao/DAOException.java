@@ -1,5 +1,6 @@
 package com.epam.aa.sportplace.dao;
 
+//TODO: to be copmleted
 public class DAOException extends Exception {
     public DAOException() {
     }
