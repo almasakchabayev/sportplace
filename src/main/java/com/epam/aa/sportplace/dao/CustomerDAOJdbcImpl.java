@@ -12,11 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //TODO: DAOException
-public class CustomerDAOPostgreSQLImpl implements CustomerDAO {
-    private static boolean customersTableCreated;
-    public void insert(Customer customer) {
+public class CustomerDAOJdbcImpl implements CustomerDAO {
+    @Override
+    public boolean insert(Customer customer) {
+        boolean success = false;
         Connection con = null;
-        Statement st = null;
         PreparedStatement pst = null;
         DataSource ds;
         ResultSet rs = null;
@@ -32,19 +32,6 @@ public class CustomerDAOPostgreSQLImpl implements CustomerDAO {
 
             //throws SQLException
             con = ds.getConnection();
-            st = con.createStatement();
-            if (!customersTableCreated) {
-                st.execute("CREATE TABLE IF NOT EXISTS customers (" +
-                        "id SERIAL PRIMARY KEY, " +
-                        "deleted BOOLEAN DEFAULT FALSE, " +
-                        "first_name VARCHAR(25), " +
-                        "last_name VARCHAR(25), " +
-                        "contact_info_id INTEGER, " +
-                        "password VARCHAR(25), " +
-                        "birth_date DATE" +
-                        ");");
-                customersTableCreated = true;
-            }
             String stm = "INSERT INTO customers(first_name, last_name, birth_date) " +
                     "VALUES(?, ?, ?)";
             pst = con.prepareStatement(stm);
@@ -59,22 +46,20 @@ public class CustomerDAOPostgreSQLImpl implements CustomerDAO {
             pst.setDate(3, birthDateToStore);
 
             pst.executeUpdate();
+            success = true;
         } catch (NamingException e) {
-            Logger logger = Logger.getLogger(CustomerDAOPostgreSQLImpl.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (ClassNotFoundException e) {
-            Logger logger = Logger.getLogger(CustomerDAOPostgreSQLImpl.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (SQLException e) {
-            Logger logger = Logger.getLogger(CustomerDAOPostgreSQLImpl.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } finally {
             try {
                 if (rs != null) {
                     rs.close();
-                }
-                if (st != null) {
-                    st.close();
                 }
                 if (pst != null) {
                     pst.close();
@@ -84,9 +69,10 @@ public class CustomerDAOPostgreSQLImpl implements CustomerDAO {
                 }
 
             } catch (SQLException ex) {
-                Logger lgr = Logger.getLogger(CustomerDAOPostgreSQLImpl.class.getName());
+                Logger lgr = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+        return success;
     }
 }

@@ -8,7 +8,8 @@ public abstract class User extends BaseEntity {
     private ContactInfo contactInfo; // email, address, contacts
     //TODO: what to do about password?
     private String PasswordHash;
-    private LocalDate birthDate; // may be timestamp?
+    //TODO: double check that for birthdays fine
+    private LocalDate birthDate;
 
     public String getFirstName() {
         return firstName;
