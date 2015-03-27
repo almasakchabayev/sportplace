@@ -1,6 +1,8 @@
 package com.epam.aa.sportplace.listener;
 
 import com.epam.aa.sportplace.dao.DAOFactory;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 
 import javax.annotation.Resource;
@@ -15,17 +17,18 @@ import java.util.Properties;
 
 @WebListener
 public class ServerInit implements ServletContextListener {
-    @Resource(name="jdbc/sportplacedb")
-    private DataSource ds;
+    private HikariDataSource ds;
+    {
+        HikariConfig config = new HikariConfig(this.getClass().getResource("/hikari.properties").getPath());
+        ds = new HikariDataSource(config);
+    }
 
-    @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        initDAOFactory();
         initFlyway();
+        initDAOFactory();
     }
 
 //    TODO: close something?
-    @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
