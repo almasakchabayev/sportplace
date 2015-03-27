@@ -1,16 +1,17 @@
 package com.epam.aa.sportplace.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class JdbcDAOFactory implements DAOFactory {
     private static DataSource ds;
-    private static Logger logger = Logger.getLogger(JdbcDAOFactory.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDAOFactory.class);
 
     static {
         try {
@@ -18,7 +19,8 @@ public class JdbcDAOFactory implements DAOFactory {
             Context envContext = (Context) cxt.lookup("java:/comp/env");
             ds = (DataSource) envContext.lookup("jdbc/SportplaceDB");
         } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            //TODO: rethrow
+            logger.error(e.getMessage(), e);
         }
     }
     @Override

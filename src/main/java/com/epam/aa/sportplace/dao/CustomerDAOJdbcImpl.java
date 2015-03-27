@@ -2,17 +2,16 @@ package com.epam.aa.sportplace.dao;
 
 import com.epam.aa.sportplace.model.Customer;
 import com.epam.aa.sportplace.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //TODO: DAOException
 public class CustomerDAOJdbcImpl implements CustomerDAO {
     Connection con;
     //TODO: how to use Logger
-    private static Logger logger = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
-
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDAOFactory.class);
     public CustomerDAOJdbcImpl() {
     }
 
@@ -45,7 +44,8 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
             pst.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            //TODO: rethrow
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 if (rs != null) {
@@ -59,7 +59,8 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
                 }
 
             } catch (SQLException e) {
-                logger.log(Level.WARNING, e.getMessage(), e);
+                //TODO: rethrow
+                logger.error(e.getMessage(), e);
             }
         }
         return success;
