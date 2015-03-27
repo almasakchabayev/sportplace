@@ -17,12 +17,7 @@ public class JdbcDAOFactory implements DAOFactory {
             InitialContext cxt = new InitialContext();
             Context envContext = (Context) cxt.lookup("java:/comp/env");
             ds = (DataSource) envContext.lookup("jdbc/SportplaceDB");
-
-            //throws ClassNotFoundException
-            Class.forName("org.postgresql.Driver");
         } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        } catch (ClassNotFoundException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
