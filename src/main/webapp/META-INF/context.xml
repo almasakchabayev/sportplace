@@ -2,28 +2,15 @@
 <!-- The contents of this file will be loaded for each web application -->
 <Context copyXML="true" path="/sportplacedb" allowCasualMultipartParsing="true">
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <!--TODO: Pool attach to app via dependency and remove from tomcat lib-->
     <Resource name="jdbc/SportplaceDB"
               auth="Container"
               type="javax.sql.DataSource"
-              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-              testWhileIdle="true"
-              testOnBorrow="true"
-              testOnReturn="false"
-              validationQuery="SELECT 1"
-              validationInterval="30000"
-              timeBetweenEvictionRunsMillis="30000"
-              maxActive="100"
-              minIdle="10"
-              maxWait="10000"
-              initialSize="10"
-              removeAbandoned="true"
-              removeAbandonedTimeout="60"
+              maxActive="15"
+              maxIdle="3"
               username="almas"
               password="Q1w2e3r4t5"
               driverClassName="org.postgresql.Driver"
               url = "jdbc:postgresql://localhost/sportplacedb"
-              jmxEnabled="true"
-              useUnicode="true"
-              characterEncoding="utf-8"
-              characterSetResults="utf8"/>
+            />
 </Context>

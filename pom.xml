@@ -20,7 +20,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1201-jdbc41</version>
-            <!--TODO: loook at other options to pool-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>7.0.59</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

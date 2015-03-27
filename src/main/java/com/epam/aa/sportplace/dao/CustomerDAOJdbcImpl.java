@@ -58,9 +58,8 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
                     con.close();
                 }
 
-            } catch (SQLException ex) {
-                Logger lgr = Logger.getLogger(CustomerDAOJdbcImpl.class.getName());
-                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            } catch (SQLException e) {
+                logger.log(Level.WARNING, e.getMessage(), e);
             }
         }
         return success;
