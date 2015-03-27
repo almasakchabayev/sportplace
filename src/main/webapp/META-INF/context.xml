@@ -2,8 +2,7 @@
 <!-- The contents of this file will be loaded for each web application -->
 <Context copyXML="true" path="/sportplacedb" allowCasualMultipartParsing="true">
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
-    <!--TODO: Pool attach to app via dependency and remove from tomcat lib-->
-    <Resource name="jdbc/SportplaceDB"
+    <Resource name="jdbc/sportplacedb"
               auth="Container"
               type="javax.sql.DataSource"
               maxActive="15"

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS customers (
+CREATE TABLE customers (
                 id SERIAL PRIMARY KEY,
                 deleted BOOLEAN DEFAULT FALSE,
                 first_name VARCHAR(25),
