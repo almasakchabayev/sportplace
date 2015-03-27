@@ -7,8 +7,8 @@
               type="javax.sql.DataSource"
               maxActive="15"
               maxIdle="3"
-              username="almas"
-              password="Q1w2e3r4t5"
+              username="sportplacedb"
+              password="sportplacedb"
               driverClassName="org.postgresql.Driver"
               url = "jdbc:postgresql://localhost/sportplacedb"
             />
