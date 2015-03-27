@@ -19,7 +19,6 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
         this.con = con;
     }
 
-    @Override
     public boolean insert(Customer customer) {
 
         boolean success = false;

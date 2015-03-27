@@ -4,6 +4,8 @@ import com.epam.aa.sportplace.dao.DAOFactory;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContextEvent;
@@ -17,6 +19,8 @@ import java.util.Properties;
 
 @WebListener
 public class ServerInit implements ServletContextListener {
+    private static final Logger logger = LoggerFactory.getLogger(ServerInit.class);
+
     private HikariDataSource ds;
     {
         HikariConfig config = new HikariConfig(this.getClass().getResource("/hikari.properties").getPath());
@@ -47,14 +51,18 @@ public class ServerInit implements ServletContextListener {
             in = this.getClass().getResourceAsStream("/dao.properties");
             daoProps.load(in);
             in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("input stream could not be loaded to properties object or closed", e);
+            throw new ServerInitException(e);
         }
         if (daoProps != null) {
             String impl = daoProps.getProperty("dao.factory");
             DAOFactory.init(impl, ds);
+            return;
         }
+        //TODO: is it ok? or just throw without logger would be better
+        ServerInitException serverInitException = new ServerInitException("Could not initialise DaoFactory");
+        logger.error("serverInitException", serverInitException);
+        throw serverInitException;
     }
 }
