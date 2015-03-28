@@ -9,13 +9,13 @@ import java.sql.*;
 
 public class CustomerDAOJdbc implements CustomerDAO {
     Connection connection;
-    private static final Logger logger = LoggerFactory.getLogger(DAOFactoryJdbc.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDAOFactory.class);
 
     public CustomerDAOJdbc() {
     }
 
-    public void setCon(Connection con) {
-        this.connection = con;
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     public boolean insert(Customer customer) {
