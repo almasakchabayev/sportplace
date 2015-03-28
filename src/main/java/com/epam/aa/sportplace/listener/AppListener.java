@@ -55,7 +55,7 @@ public class AppListener implements ServletContextListener {
         }
         if (daoProps == null) {
             AppListenerException appListenerException = new AppListenerException("Could not initialise DaoFactory");
-            logger.error("appListenerException", appListenerException);
+            logger.error(appListenerException.getMessage(), appListenerException);
             throw appListenerException;
         }
         String impl = daoProps.getProperty("dao.factory");

@@ -7,19 +7,19 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-//TODO: DAOException
-public class CustomerDAOJdbcImpl implements CustomerDAO {
-    Connection con;
-    //TODO: how to use Logger
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDAOFactory.class);
-    public CustomerDAOJdbcImpl() {
+public class CustomerDAOJdbc implements CustomerDAO {
+    Connection connection;
+    private static final Logger logger = LoggerFactory.getLogger(DAOFactoryJdbc.class);
+
+    public CustomerDAOJdbc() {
     }
 
     public void setCon(Connection con) {
-        this.con = con;
+        this.connection = con;
     }
 
     public boolean insert(Customer customer) {
+        //TODO: insert checks
 
         boolean success = false;
         PreparedStatement pst = null;
@@ -28,7 +28,7 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
         try {
             String stm = "INSERT INTO customers(first_name, last_name, birth_date) " +
                     "VALUES(?, ?, ?)";
-            pst = con.prepareStatement(stm);
+            pst = connection.prepareStatement(stm);
             pst.setString(1, customer.getFirstName());
             pst.setString(2, customer.getLastName());
             //TODO: relationship to contactinfo
@@ -53,8 +53,8 @@ public class CustomerDAOJdbcImpl implements CustomerDAO {
                 if (pst != null) {
                     pst.close();
                 }
-                if (con != null) {
-                    con.close();
+                if (connection != null) {
+                    connection.close();
                 }
 
             } catch (SQLException e) {
