@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 @WebListener
 public class AppListener implements ServletContextListener {
@@ -24,7 +21,7 @@ public class AppListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         initDs();
         initFlyway();
-        initDAOFactory();
+        initDaoFactory();
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
@@ -32,8 +29,9 @@ public class AppListener implements ServletContextListener {
     }
 
     private void initDs() {
-        HikariConfig config = new HikariConfig(this.getClass().getResource("/hikari.properties").getPath());
+        HikariConfig config = new HikariConfig(ConfigurationProperties.getHikariPropertiesPath());
         ds = new HikariDataSource(config);
+        JdbcDaoFactory.setDataSource(ds);
     }
 
     private void initFlyway() {
@@ -42,27 +40,9 @@ public class AppListener implements ServletContextListener {
         flyway.migrate();
     }
 
-    private void initDAOFactory() {
-        Properties daoProps = null;
-        InputStream in;
-        try {
-            daoProps = new Properties();
-            in = this.getClass().getResourceAsStream("/dao.properties");
-            daoProps.load(in);
-            in.close();
-        } catch (IOException e) {
-            logger.error("input stream could not be loaded to properties object or closed", e);
-            throw new AppListenerException(e);
-        }
-        if (daoProps == null) {
-            AppListenerException appListenerException = new AppListenerException("Could not initialise DaoFactory");
-            logger.error(appListenerException.getMessage(), appListenerException);
-            throw appListenerException;
-        }
-        String impl = daoProps.getProperty("dao.factory");
+    private void initDaoFactory() {
+        String impl = ConfigurationProperties.getProperty("dao.factory");
         DaoFactory.init(impl);
-        if (impl.equals("jdbc")) {
-            JdbcDaoFactory.setDataSource(ds);
-        }
+        logger.info("Successfully initialized Dao Factory to {}", impl);
     }
 }

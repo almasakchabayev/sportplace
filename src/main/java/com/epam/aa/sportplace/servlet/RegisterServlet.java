@@ -25,11 +25,13 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        DaoFactory daoFactory = DaoFactory.getDAOFactory();
-        DaoManager daoManager = new
+        //get initialized DaoFactory
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        //create DaoManager
 
-                CustomerDao customerDAO = daoFactory.getCustomerDAO();
-        customerDAO.insert(customer);
+        CustomerDao customerDAO = daoFactory.getCustomerDao();
+        boolean insert = customerDAO.insert(customer);
+        if (insert == false) throw new RuntimeException("not inserted");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

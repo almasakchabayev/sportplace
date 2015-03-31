@@ -9,12 +9,9 @@ import java.sql.*;
 
 public class CustomerDaoJdbc implements CustomerDao {
     Connection connection;
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomerDaoJdbc.class);
 
-    public CustomerDaoJdbc() {
-    }
-
-    public void setConnection(Connection connection) {
+    public CustomerDaoJdbc(Connection connection) {
         this.connection = connection;
     }
 
@@ -26,7 +23,6 @@ public class CustomerDaoJdbc implements CustomerDao {
         ResultSet rs = null;
 
         try {
-            connection.setAutoCommit(false);
             String stm = "INSERT INTO customer(first_name, last_name, birth_date) " +
                     "VALUES(?, ?, ?)";
             pst = connection.prepareStatement(stm);
@@ -43,6 +39,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
             pst.executeUpdate();
             success = true;
+            logger.info("new Customer inserted {}", customer);
         } catch (SQLException e) {
             //TODO: rethrow
             logger.error(e.getMessage(), e);

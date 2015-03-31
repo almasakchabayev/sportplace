@@ -5,46 +5,76 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
+/**
+ *
+ */
 public abstract class DaoFactory {
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(DaoFactory.class);
 
-    private static String impl;
+    private static Impl defaultImpl;
 
-    private Connection connection;
-
-    public static void init(String implProp) {
-        if (implProp == null || implProp.isEmpty()) {
-            DaoException daoException = new DaoException("dao.factory property is not defined in dao.properties file");
+    public static void init(String impl) {
+        // null and empty string are checked in ConfigurationProperties class
+        if (!Impl.isImpl(impl)) {
+            DaoException daoException = new DaoException("Such implementation '" + impl + "' does not exist");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
-        impl = implProp;
+        defaultImpl = Impl.getImplFromString(impl);
+        logger.info("DaoFactory is successfully initialized with {} implementation and", impl);
     }
 
-    public static DaoFactory getDAOFactory() {
+    public static DaoFactory getInstance() {
+        return getInstance(null);
+    }
+
+    public static DaoFactory getInstance(Impl impl) {
         if (impl == null) {
-            DaoException daoException = new DaoException("DaoFactory was not initilized");
-            logger.error(daoException.getMessage(), daoException);
-            throw daoException;
+            if (defaultImpl == null) {
+                DaoException daoException = new DaoException("DaoFactory was not initilized");
+                logger.error(daoException.getMessage(), daoException);
+                throw daoException;
+            }
+            impl = defaultImpl;
         }
-        if (impl.equals("jdbc")) {
+        if (impl.equals(Impl.JDBC)) {
             return new JdbcDaoFactory();
         }
-        DaoException daoException = new DaoException("no Factories found for impl provided");
-        logger.error(daoException.getMessage(), daoException);
-        throw daoException;
+        //cannot happen
+        return null;
     }
 
-    public DaoFactory() {
-    }
+    public abstract Connection getConnection() throws DaoException;
 
-    public abstract CustomerDao getCustomerDAO();
+    //TODO: add methods returning DAO here
+    public abstract CustomerDao getCustomerDao();
 
-    public Connection getConnection() {
-        return connection;
-    }
+    public enum Impl {
+        JDBC;
+        private static final Impl[] values = values();
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
+        private String impl;
+
+        static {
+            JDBC.impl = "jdbc";
+        }
+
+        public String getImpl() {
+            return impl;
+        }
+
+        public static boolean isImpl(String string) {
+            if (getImplFromString(string) == null)
+                return false;
+            return true;
+        }
+
+        public static Impl getImplFromString(String string) {
+            for (Impl impl : values) {
+                if (impl.getImpl().equals(string))
+                    return impl;
+            }
+            return null;
+        }
     }
 }
