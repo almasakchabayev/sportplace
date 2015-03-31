@@ -52,6 +52,29 @@ public class JdbcDaoFactory extends DaoFactory {
     }
 
     @Override
+    protected Connection getTxConnection() {
+        try {
+            Connection connection = getConnection();
+            connection.setAutoCommit(false);
+            return connection;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Object transaction(DaoCommand daoCommand) {
+        Object result = daoCommand.execute(this);
+        try {
+            getConnection().commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CustomerDao getCustomerDao() {
         return new CustomerDaoJdbc(getConnection());
     }

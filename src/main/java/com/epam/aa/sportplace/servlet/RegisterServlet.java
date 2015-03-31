@@ -1,6 +1,7 @@
 package com.epam.aa.sportplace.servlet;
 
 import com.epam.aa.sportplace.dao.CustomerDao;
+import com.epam.aa.sportplace.dao.DaoCommand;
 import com.epam.aa.sportplace.dao.DaoFactory;
 import com.epam.aa.sportplace.model.Customer;
 
@@ -19,7 +20,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phone");
 
-        Customer customer = new Customer();
+        final Customer customer = new Customer();
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
         customer.setEmail(email);
@@ -29,9 +30,12 @@ public class RegisterServlet extends HttpServlet {
         DaoFactory daoFactory = DaoFactory.getInstance();
         //create DaoManager
 
-        CustomerDao customerDAO = daoFactory.getCustomerDao();
-        boolean insert = customerDAO.insert(customer);
-        if (insert == false) throw new RuntimeException("not inserted");
+        daoFactory.transaction(new DaoCommand() {
+            public Object execute(DaoFactory daoFactory) {
+                CustomerDao customerDAO = daoFactory.getCustomerDao();
+                return customerDAO.insert(customer);
+            }
+        });
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
