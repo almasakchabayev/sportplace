@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class CustomerDAOJdbc implements CustomerDAO {
+public class CustomerDao1Jdbc implements CustomerDao1 {
     Connection connection;
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDAOFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory1.class);
 
-    public CustomerDAOJdbc() {
+    public CustomerDao1Jdbc() {
     }
 
     public void setConnection(Connection connection) {
@@ -26,7 +26,8 @@ public class CustomerDAOJdbc implements CustomerDAO {
         ResultSet rs = null;
 
         try {
-            String stm = "INSERT INTO customers(first_name, last_name, birth_date) " +
+            connection.setAutoCommit(false);
+            String stm = "INSERT INTO customer(first_name, last_name, birth_date) " +
                     "VALUES(?, ?, ?)";
             pst = connection.prepareStatement(stm);
             pst.setString(1, customer.getFirstName());

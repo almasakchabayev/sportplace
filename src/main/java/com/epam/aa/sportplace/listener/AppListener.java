@@ -1,7 +1,7 @@
 package com.epam.aa.sportplace.listener;
 
-import com.epam.aa.sportplace.dao.DAOFactory;
-import com.epam.aa.sportplace.dao.JdbcDAOFactory;
+import com.epam.aa.sportplace.dao.DaoFactory1;
+import com.epam.aa.sportplace.dao.JdbcDaoFactory1;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
@@ -60,9 +60,9 @@ public class AppListener implements ServletContextListener {
             throw appListenerException;
         }
         String impl = daoProps.getProperty("dao.factory");
-        DAOFactory.init(impl);
+        DaoFactory1.init(impl);
         if (impl.equals("jdbc")) {
-            JdbcDAOFactory.setDataSource(ds);
+            JdbcDaoFactory1.setDataSource(ds);
         }
     }
 }

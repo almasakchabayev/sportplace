@@ -1,4 +1,4 @@
 package com.epam.aa.sportplace.dao;
 
-public interface DAO {
+public interface Dao1 {
 }
