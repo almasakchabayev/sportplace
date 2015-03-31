@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class CustomerDao1Jdbc implements CustomerDao1 {
+public class CustomerDaoJdbc implements CustomerDao {
     Connection connection;
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory1.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory.class);
 
-    public CustomerDao1Jdbc() {
+    public CustomerDaoJdbc() {
     }
 
     public void setConnection(Connection connection) {

@@ -6,22 +6,22 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-public class JdbcDaoFactory1 extends DaoFactory1 {
+public class JdbcDaoFactory extends DaoFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory1.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory.class);
 
     private static DataSource dataSource;
 
-    public JdbcDaoFactory1() {
+    public JdbcDaoFactory() {
         if (dataSource == null) {
-            DaoException1 daoException = new DaoException1("dataSourxe is not defined, need to ne initialized first");
+            DaoException daoException = new DaoException("dataSourxe is not defined, need to ne initialized first");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
         try {
             setConnection(dataSource.getConnection());
         } catch (SQLException e) {
-            DaoException1 daoException = new DaoException1("Could not get connection from dataSource");
+            DaoException daoException = new DaoException("Could not get connection from dataSource");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
@@ -32,11 +32,11 @@ public class JdbcDaoFactory1 extends DaoFactory1 {
     }
 
     public static void setDataSource(DataSource dataSource) {
-        JdbcDaoFactory1.dataSource = dataSource;
+        JdbcDaoFactory.dataSource = dataSource;
     }
 
-    public CustomerDao1 getCustomerDAO() {
-        CustomerDao1Jdbc customerDAOJdbc = new CustomerDao1Jdbc();
+    public CustomerDao getCustomerDAO() {
+        CustomerDaoJdbc customerDAOJdbc = new CustomerDaoJdbc();
         //TODO: should I set connection, or take it from the Factory in DAOImpl?
         customerDAOJdbc.setConnection(getConnection());
         return customerDAOJdbc;

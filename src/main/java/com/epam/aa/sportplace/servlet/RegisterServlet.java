@@ -1,7 +1,7 @@
 package com.epam.aa.sportplace.servlet;
 
-import com.epam.aa.sportplace.dao.CustomerDao1;
-import com.epam.aa.sportplace.dao.DaoFactory1;
+import com.epam.aa.sportplace.dao.CustomerDao;
+import com.epam.aa.sportplace.dao.DaoFactory;
 import com.epam.aa.sportplace.model.Customer;
 
 import javax.servlet.ServletException;
@@ -25,10 +25,10 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        DaoFactory1 daoFactory1 = DaoFactory1.getDAOFactory();
+        DaoFactory daoFactory = DaoFactory.getDAOFactory();
         DaoManager daoManager = new
 
-                CustomerDao1 customerDAO = daoFactory1.getCustomerDAO();
+                CustomerDao customerDAO = daoFactory.getCustomerDAO();
         customerDAO.insert(customer);
     }
 

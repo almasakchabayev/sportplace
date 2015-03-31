@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
-public abstract class DaoFactory1 {
-    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory1.class);
+public abstract class DaoFactory {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDaoFactory.class);
 
     private static String impl;
 
@@ -14,31 +14,31 @@ public abstract class DaoFactory1 {
 
     public static void init(String implProp) {
         if (implProp == null || implProp.isEmpty()) {
-            DaoException1 daoException = new DaoException1("dao.factory property is not defined in dao.properties file");
+            DaoException daoException = new DaoException("dao.factory property is not defined in dao.properties file");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
         impl = implProp;
     }
 
-    public static DaoFactory1 getDAOFactory() {
+    public static DaoFactory getDAOFactory() {
         if (impl == null) {
-            DaoException1 daoException = new DaoException1("DaoFactory1 was not initilized");
+            DaoException daoException = new DaoException("DaoFactory was not initilized");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
         if (impl.equals("jdbc")) {
-            return new JdbcDaoFactory1();
+            return new JdbcDaoFactory();
         }
-        DaoException1 daoException = new DaoException1("no Factories found for impl provided");
+        DaoException daoException = new DaoException("no Factories found for impl provided");
         logger.error(daoException.getMessage(), daoException);
         throw daoException;
     }
 
-    public DaoFactory1() {
+    public DaoFactory() {
     }
 
-    public abstract CustomerDao1 getCustomerDAO();
+    public abstract CustomerDao getCustomerDAO();
 
     public Connection getConnection() {
         return connection;
