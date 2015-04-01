@@ -1,6 +1,5 @@
 package com.epam.aa.sportplace.servlet;
 
-import com.epam.aa.sportplace.dao.CustomerDao;
 import com.epam.aa.sportplace.dao.DaoCommand;
 import com.epam.aa.sportplace.dao.DaoFactory;
 import com.epam.aa.sportplace.dao.GenericDao;
@@ -32,7 +31,7 @@ public class RegisterServlet extends HttpServlet {
 
         Integer o = (Integer) daoFactory.executeTx(new DaoCommand() {
             public Object execute(DaoFactory daoFactory) {
-                GenericDao<Customer, Integer> customerDAO = daoFactory.getCustomerDao();
+                GenericDao<Customer> customerDAO = daoFactory.getCustomerDao();
                 return customerDAO.create(customer);
             }
         });

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class CustomerDaoJdbc implements GenericDao<Customer, Integer> {
+public class CustomerDaoJdbc implements GenericDao<Customer> {
     Connection connection;
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerDaoJdbc.class);
@@ -62,6 +62,35 @@ public class CustomerDaoJdbc implements GenericDao<Customer, Integer> {
     }
 
     public Customer read(Integer id) {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        try {
+            String stm = "SELECT * FROM customer WHERE id=?;";
+            pst = connection.prepareStatement(stm);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            Customer result = new Customer();
+            while (rs.next()) {
+                result.setFirstName(rs.getString("first_name"));
+            }
+            return result;
+        } catch (SQLException e) {
+            //TODO: rethrow
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (SQLException e) {
+                //TODO: rethrow
+                logger.error(e.getMessage(), e);
+            }
+        }
         return null;
     }
 
