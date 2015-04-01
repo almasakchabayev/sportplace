@@ -15,16 +15,8 @@ public class JdbcDaoFactory extends DaoFactory {
 
     public JdbcDaoFactory() {
         if (dataSource == null) {
-            DaoException daoException = new DaoException("dataSourxe is not defined, " +
+            DaoException daoException = new DaoException("dataSource is not defined, " +
                     "need to ne initialized first in StartAppListener");
-            logger.error(daoException.getMessage(), daoException);
-            throw daoException;
-        }
-        try {
-            connection = dataSource.getConnection();
-            logger.info("JdbcDaoFactory created successfully");
-        } catch (SQLException e) {
-            DaoException daoException = new DaoException("Could not get connection from dataSource");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
@@ -40,42 +32,58 @@ public class JdbcDaoFactory extends DaoFactory {
         logger.info("Jdbc datasource initialised successfully");
     }
 
-    @Override
-    public Connection getConnection() throws DaoException {
+    public static DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public Connection getConnection() {
+        if (connection != null) return connection;
         try {
-            return dataSource.getConnection();
+            connection = dataSource.getConnection();
+            return connection;
         } catch (SQLException e) {
-            DaoException daoException = new DaoException(e);
-            logger.error("Could not get connection from dataSource {}", dataSource, daoException);
+            DaoException daoException = new DaoException(
+                    "Could not get connection from dataSource " + dataSource, e);
+            logger.error(daoException.getMessage(), daoException);
+            throw daoException;
+        }
+    }
+
+    //TODO: add proper catches and log errors and info for these classes
+    protected Connection getTxConnection() {
+        try {
+            getConnection().setAutoCommit(false);
+            return connection;
+        } catch (SQLException e) {
+            DaoException daoException = new DaoException(
+                    "Could not set autocommit to false for connection " + connection, e);
+            logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
     }
 
     @Override
-    protected Connection getTxConnection() {
+    public Object executeTx(DaoCommand daoCommand) {
         try {
-            Connection connection = getConnection();
-            connection.setAutoCommit(false);
-            return connection;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public Object transaction(DaoCommand daoCommand) {
-        Object result = daoCommand.execute(this);
-        try {
+            Object result = daoCommand.execute(this);
             getConnection().commit();
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                getConnection().setAutoCommit(true);
+                getConnection().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         }
-        return result;
     }
 
     @Override
     public CustomerDao getCustomerDao() {
-        return new CustomerDaoJdbc(getConnection());
+        return new CustomerDaoJdbc(getTxConnection());
     }
 }

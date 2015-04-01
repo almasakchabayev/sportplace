@@ -26,11 +26,9 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        //get initialized DaoFactory
         DaoFactory daoFactory = DaoFactory.getInstance();
-        //create DaoManager
 
-        daoFactory.transaction(new DaoCommand() {
+        daoFactory.executeTx(new DaoCommand() {
             public Object execute(DaoFactory daoFactory) {
                 CustomerDao customerDAO = daoFactory.getCustomerDao();
                 return customerDAO.insert(customer);

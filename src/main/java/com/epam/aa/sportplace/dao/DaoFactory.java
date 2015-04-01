@@ -3,9 +3,6 @@ package com.epam.aa.sportplace.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /**
  *
  */
@@ -39,33 +36,16 @@ public abstract class DaoFactory {
             impl = defaultImpl;
         }
         if (impl.equals(Impl.JDBC)) {
+            if (JdbcDaoFactory.getDataSource() != null) {
+                return new JdbcDaoFactory();
+            }
+            JdbcConfig.initJdbcDaoFactory();
             return new JdbcDaoFactory();
         }
         //cannot happen
         return null;
     }
-    //TODO: add proper catches and log errors and info for these classes
-    protected abstract Connection getConnection() throws DaoException;
-    protected abstract Connection getTxConnection();
-    public abstract Object transaction(DaoCommand daoCommand);
-    public Object executeAndClose(DaoCommand daoCommand) {
-        try{
-            return daoCommand.execute(this);
-        } finally {
-            try {
-                getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public Object transactionAndClose(final DaoCommand daoCommand) {
-        return executeAndClose(new DaoCommand(){
-            public Object execute(DaoFactory factory){
-                return factory.transaction(daoCommand);
-            }
-        });
-    }
+    public abstract Object executeTx(DaoCommand daoCommand);
 
     //TODO: add methods returning DAO here
     public abstract CustomerDao getCustomerDao();

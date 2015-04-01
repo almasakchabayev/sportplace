@@ -51,10 +51,6 @@ public class CustomerDaoJdbc implements CustomerDao {
                 if (pst != null) {
                     pst.close();
                 }
-                if (connection != null) {
-                    connection.close();
-                }
-
             } catch (SQLException e) {
                 //TODO: rethrow
                 logger.error(e.getMessage(), e);
