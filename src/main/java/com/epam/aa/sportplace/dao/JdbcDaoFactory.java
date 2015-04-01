@@ -16,7 +16,7 @@ public class JdbcDaoFactory extends DaoFactory {
     public JdbcDaoFactory() {
         if (dataSource == null) {
             DaoException daoException = new DaoException("dataSourxe is not defined, " +
-                    "need to ne initialized first in AppListener");
+                    "need to ne initialized first in StartAppListener");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
@@ -32,7 +32,7 @@ public class JdbcDaoFactory extends DaoFactory {
 
     public static void setDataSource(DataSource dataSource) {
         if (dataSource == null) {
-            DaoException daoException = new DaoException("DataSource failed to initialize in AppListener");
+            DaoException daoException = new DaoException("DataSource failed to initialize in StartAppListener");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }

@@ -13,8 +13,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
-public class AppListener implements ServletContextListener {
-    private static final Logger logger = LoggerFactory.getLogger(AppListener.class);
+public class StartAppListener implements ServletContextListener {
+    private static final Logger logger = LoggerFactory.getLogger(StartAppListener.class);
 
     private HikariDataSource ds;
 
