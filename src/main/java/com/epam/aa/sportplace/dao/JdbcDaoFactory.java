@@ -36,7 +36,9 @@ public class JdbcDaoFactory extends DaoFactory {
         return dataSource;
     }
 
-    public Connection getConnection() {
+    private Connection getConnection() {
+        //TODO: do I need to check if connection has been closed before and gets a new connection from datasource or
+        // one instance of datafactory per transaction is fine?
         if (connection != null) return connection;
         try {
             connection = dataSource.getConnection();
@@ -49,8 +51,7 @@ public class JdbcDaoFactory extends DaoFactory {
         }
     }
 
-    //TODO: add proper catches and log errors and info for these classes
-    protected Connection getTxConnection() {
+    private Connection getTxConnection() {
         try {
             getConnection().setAutoCommit(false);
             return connection;
@@ -69,21 +70,33 @@ public class JdbcDaoFactory extends DaoFactory {
             getConnection().commit();
             return result;
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            DaoException daoException = new DaoException(
+                    "Could not commit daoCommand", e);
+            logger.error(daoException.getMessage(), daoException);
+            throw daoException;
         } finally {
             try {
                 getConnection().setAutoCommit(true);
+                logger.info("autocommit true");
                 getConnection().close();
             } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                DaoException daoException = new DaoException(
+                        "Connection did not close properly when executing daoCommand", e);
+                logger.error(daoException.getMessage(), daoException);
+                throw daoException;
             }
+            //TODO can I put information in here about daoCommand?
+//            try {
+//                daoCommand.getClass().getMethod("execute", null);
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//            }
+            logger.info("transaction successfully executed");
         }
     }
 
     @Override
-    public CustomerDao getCustomerDao() {
+    public GenericDao getCustomerDao() {
         return new CustomerDaoJdbc(getTxConnection());
     }
 }

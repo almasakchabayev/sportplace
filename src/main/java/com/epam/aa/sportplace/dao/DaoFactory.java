@@ -19,7 +19,6 @@ public abstract class DaoFactory {
             throw daoException;
         }
         defaultImpl = Impl.getImplFromString(impl);
-        logger.info("DaoFactory is successfully initialized with {} implementation and", impl);
     }
 
     public static DaoFactory getInstance() {
@@ -48,7 +47,7 @@ public abstract class DaoFactory {
     public abstract Object executeTx(DaoCommand daoCommand);
 
     //TODO: add methods returning DAO here
-    public abstract CustomerDao getCustomerDao();
+    public abstract GenericDao getCustomerDao();
 
     public enum Impl {
         JDBC;

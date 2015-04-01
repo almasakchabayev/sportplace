@@ -7,24 +7,24 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class CustomerDaoJdbc implements GenericDao<Customer, Integer> {
+public class CustomerDaoJdbcOld implements CustomerDao {
     Connection connection;
+    private static final Logger logger = LoggerFactory.getLogger(CustomerDaoJdbcOld.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomerDaoJdbc.class);
-
-    public CustomerDaoJdbc(Connection connection) {
+    public CustomerDaoJdbcOld(Connection connection) {
         this.connection = connection;
     }
 
-    public Integer create(Customer customer) {
+    public boolean create(Customer customer) {
         //TODO: create checks
+
+        boolean success = false;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        Integer objectId = null;
 
         try {
             String stm = "INSERT INTO customer(first_name, last_name, birth_date) " +
-                    "VALUES(?, ?, ?) RETURNING id;";
+                    "VALUES(?, ?, ?)";
             pst = connection.prepareStatement(stm);
             pst.setString(1, customer.getFirstName());
             pst.setString(2, customer.getLastName());
@@ -37,10 +37,9 @@ public class CustomerDaoJdbc implements GenericDao<Customer, Integer> {
             Date birthDateToStore = Util.getSQLDateFromLocalDate(customer.getBirthDate());
             pst.setDate(3, birthDateToStore);
 
-            rs = pst.executeQuery();
-            while (rs.next()) objectId = rs.getInt(1);
-            logger.info("new Customer inserted {} with assigned id {}", customer, objectId);
-            return objectId;
+            pst.executeUpdate();
+            success = true;
+            logger.info("new Customer inserted {}", customer);
         } catch (SQLException e) {
             //TODO: rethrow
             logger.error(e.getMessage(), e);
@@ -57,19 +56,38 @@ public class CustomerDaoJdbc implements GenericDao<Customer, Integer> {
                 logger.error(e.getMessage(), e);
             }
         }
-        //TODO: delete when added rethrows
-        return null;
+        return success;
     }
 
     public Customer read(Integer id) {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        try {
+            String stm = "SELECT * FROM customer WHERE id=1;";
+            pst = connection.prepareStatement(stm);
+            rs = pst.executeQuery();
+            Customer result = new Customer();
+            while (rs.next()) {
+                result.setFirstName(rs.getString("first_name"));
+            }
+            return result;
+        } catch (SQLException e) {
+            //TODO: rethrow
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (SQLException e) {
+                //TODO: rethrow
+                logger.error(e.getMessage(), e);
+            }
+        }
         return null;
-    }
-
-    public boolean update(Customer transientObject) {
-        return false;
-    }
-
-    public boolean delete(Customer transientObject) {
-        return false;
     }
 }

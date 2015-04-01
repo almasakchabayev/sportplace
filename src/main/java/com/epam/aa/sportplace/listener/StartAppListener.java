@@ -23,6 +23,6 @@ public class StartAppListener implements ServletContextListener {
     private void initDaoFactory() {
         String impl = ConfigurationProperties.getProperty("dao.factory");
         DaoFactory.init(impl);
-        logger.info("Successfully initialized Dao Factory to {}", impl);
+        logger.info("DaoFactory is successfully initialized with implementation {}", impl);
     }
 }
