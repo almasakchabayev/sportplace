@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class CustomerDaoJdbc implements GenericDao<Customer> {
+public class CustomerDaoJdbc implements CustomerDao {
     Connection connection;
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerDaoJdbc.class);
