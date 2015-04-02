@@ -1,5 +1,6 @@
 package com.epam.aa.sportplace.dao;
 
+import com.epam.aa.sportplace.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,6 @@ public class JdbcDaoFactory extends DaoFactory {
     }
 
     private Connection getConnection() {
-        //TODO: do I need to check if connection has been closed before and gets a new connection from datasource or
-        // one instance of datafactory per transaction is fine?
         if (connection != null) return connection;
         try {
             connection = dataSource.getConnection();
@@ -51,25 +50,41 @@ public class JdbcDaoFactory extends DaoFactory {
         }
     }
 
-    private Connection getTxConnection() {
+    //execute daoCommand with closing connection
+    @Override
+    public <T> T execute(DaoCommand<T> daoCommand) {
+        try {
+            T result = daoCommand.execute(this);
+            return result;
+        } finally {
+            try {
+                getConnection().close();
+                logger.debug("Connection closed, executed properly");
+            } catch (SQLException e) {
+                DaoException daoException = new DaoException(
+                        "Connection did not close properly when executing daoCommand", e);
+                logger.error(daoException.getMessage(), daoException);
+                throw daoException;
+            }
+        }
+    }
+
+    // execute transaction/transactions with closing the connection
+    @Override
+    public <T> T transaction(DaoCommand<T> daoCommand) {
         try {
             getConnection().setAutoCommit(false);
-            return connection;
         } catch (SQLException e) {
             DaoException daoException = new DaoException(
                     "Could not set autocommit to false for connection " + connection, e);
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
-    }
-
-    @Override
-    public Object executeTx(DaoCommand daoCommand) {
         try {
-            Object result = daoCommand.execute(this);
+            T result = daoCommand.execute(this);
             getConnection().commit();
             return result;
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             DaoException daoException = new DaoException(
                     "Could not commit daoCommand", e);
             logger.error(daoException.getMessage(), daoException);
@@ -77,26 +92,18 @@ public class JdbcDaoFactory extends DaoFactory {
         } finally {
             try {
                 getConnection().setAutoCommit(true);
-                logger.info("autocommit true");
-                getConnection().close();
+                logger.debug("transaction executed properly");
             } catch (SQLException e) {
                 DaoException daoException = new DaoException(
-                        "Connection did not close properly when executing daoCommand", e);
+                        "Autocommit could not set to true when executing daoCommand", e);
                 logger.error(daoException.getMessage(), daoException);
                 throw daoException;
             }
-            //TODO can I put information in here about daoCommand?
-//            try {
-//                daoCommand.getClass().getMethod("execute", null);
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//            }
-            logger.info("transaction successfully executed");
         }
     }
 
     @Override
-    public GenericDao getCustomerDao() {
-        return new CustomerDaoJdbc(getTxConnection());
+    public GenericDao<Customer> getCustomerDao() {
+        return new CustomerDaoJdbc(getConnection());
     }
 }

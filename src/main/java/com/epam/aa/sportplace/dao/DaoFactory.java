@@ -1,5 +1,6 @@
 package com.epam.aa.sportplace.dao;
 
+import com.epam.aa.sportplace.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,10 +45,19 @@ public abstract class DaoFactory {
         //cannot happen
         return null;
     }
-    public abstract Object executeTx(DaoCommand daoCommand);
+
+    public abstract <T> T execute(DaoCommand<T> daoCommand);
+    public abstract <T> T transaction(DaoCommand<T> daoCommand);
+    public <T> T executeTx(final DaoCommand<T> daoCommand) {
+        return execute(new DaoCommand<T>() {
+            public T execute(DaoFactory daofactory) {
+                return daofactory.transaction(daoCommand);
+            }
+        });
+    }
 
     //TODO: add methods returning DAO here
-    public abstract GenericDao getCustomerDao();
+    public abstract GenericDao<Customer> getCustomerDao();
 
     public enum Impl {
         JDBC;
