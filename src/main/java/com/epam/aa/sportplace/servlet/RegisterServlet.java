@@ -4,6 +4,7 @@ import com.epam.aa.sportplace.dao.DaoCommand;
 import com.epam.aa.sportplace.dao.DaoFactory;
 import com.epam.aa.sportplace.dao.GenericDao;
 import com.epam.aa.sportplace.model.Customer;
+import com.epam.aa.sportplace.service.CustomerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +28,11 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        DaoFactory daoFactory = DaoFactory.getInstance();
+        PrintWriter writer = response.getWriter();
+        Integer id = new CustomerService().create(customer);
+        writer.println(id);
+//        DaoFactory daoFactory = DaoFactory.getInstance();
+
 
 //        Integer o = daoFactory.executeTx(new DaoCommand() {
 //            public Object execute(DaoFactory daoFactory) {
@@ -37,23 +42,23 @@ public class RegisterServlet extends HttpServlet {
 //        });
 
 
-        PrintWriter writer = response.getWriter();
-        String s = daoFactory.executeTx(new DaoCommand() {
-            public Object execute(DaoFactory daoFactory) {
-                GenericDao<Customer> customerDAO = daoFactory.getCustomerDao();
-                return customerDAO.create(customer);
-            }
-        }).getClass().toString();
-        writer.println(s);
-
-        DaoFactory daoFactory2 = DaoFactory.getInstance();
-        String s2 = daoFactory2.executeTx(new DaoCommand() {
-            public Object execute(DaoFactory daoFactory) {
-                GenericDao<Customer> customerDAO = daoFactory.getCustomerDao();
-                return customerDAO.read(1);
-            }
-        }).getClass().toString();
-        writer.println(s2);
+//        String s = daoFactory.executeTx(new DaoCommand() {
+//            public Object execute(DaoFactory daoFactory) {
+//                GenericDao<Customer> customerDAO = daoFactory.getCustomerDao();
+//                return customerDAO.create(customer);
+//            }
+//        }).getClass().toString();
+//        writer.println(s);
+//
+//        DaoFactory daoFactory2 = DaoFactory.getInstance();
+//        String s2 = daoFactory2.executeTx(new DaoCommand() {
+//
+//            public Object execute(DaoFactory daoFactory) {
+//                GenericDao<Customer> customerDAO = daoFactory.getCustomerDao();
+//                return customerDAO.read(1);
+//            }
+//        }).getClass().toString();
+//        writer.println(s2);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

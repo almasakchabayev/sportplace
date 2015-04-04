@@ -49,16 +49,13 @@ public abstract class DaoFactory {
     public abstract <T> T execute(DaoCommand<T> daoCommand);
     public abstract <T> T transaction(DaoCommand<T> daoCommand);
     public <T> T executeTx(final DaoCommand<T> daoCommand) {
-        return execute(new DaoCommand<T>() {
-            public T execute(DaoFactory daofactory) {
-                return daofactory.transaction(daoCommand);
-            }
-        });
+        return execute(daofactory -> daofactory.transaction(daoCommand));
     }
 
     //TODO: add methods returning DAO here
-    public abstract GenericDao<Customer> getCustomerDao();
+    public abstract CustomerDao getCustomerDao();
 
+    //TODO: consider EnumSet EnumMap
     public enum Impl {
         JDBC;
         private static final Impl[] values = values();

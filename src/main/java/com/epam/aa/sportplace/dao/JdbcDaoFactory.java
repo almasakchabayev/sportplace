@@ -103,7 +103,7 @@ public class JdbcDaoFactory extends DaoFactory {
     }
 
     @Override
-    public GenericDao<Customer> getCustomerDao() {
+    public CustomerDao getCustomerDao() {
         return new CustomerDaoJdbc(getConnection());
     }
 }

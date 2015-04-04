@@ -10,6 +10,6 @@ import java.util.Properties;
 
 public class Runner {
     public static void main(String[] args) {
-
+        Runnable r2 = () -> System.out.println("Hello world two!");
     }
 }
