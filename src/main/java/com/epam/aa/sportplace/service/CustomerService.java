@@ -14,8 +14,8 @@ public class CustomerService {
 
     public Customer find(final Integer integer) {
         DaoFactory daoFactory = DaoFactory.getInstance();
-        return daoFactory.executeTx(daoFactory1 -> {
-            CustomerDao customerDAO = daoFactory1.getCustomerDao();
+        return daoFactory.executeTx(factory -> {
+            CustomerDao customerDAO = factory.getCustomerDao();
             return customerDAO.read(integer);
         });
     }

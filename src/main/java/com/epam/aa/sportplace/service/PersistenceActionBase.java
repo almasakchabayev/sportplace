@@ -11,7 +11,7 @@ public abstract class PersistenceActionBase<E> {
 
     protected <T> T doAction() {
         DaoFactory daoFactory = DaoFactory.getInstance();
-        return daoFactory.executeTx(daoFactory1 -> doPersistenceAction(daoFactory1));
+        return daoFactory.executeTx(factory -> doPersistenceAction(factory));
     }
 
     protected abstract <T> T doPersistenceAction(DaoFactory daoFactory);

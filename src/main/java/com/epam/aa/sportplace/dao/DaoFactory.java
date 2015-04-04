@@ -48,8 +48,8 @@ public abstract class DaoFactory {
 
     public abstract <T> T execute(DaoCommand<T> daoCommand);
     public abstract <T> T transaction(DaoCommand<T> daoCommand);
-    public <T> T executeTx(final DaoCommand<T> daoCommand) {
-        return execute(daofactory -> daofactory.transaction(daoCommand));
+    public <T> T executeTx(DaoCommand<T> daoCommand) {
+        return execute(daoFactory -> daoFactory.transaction(daoCommand));
     }
 
     //TODO: add methods returning DAO here
