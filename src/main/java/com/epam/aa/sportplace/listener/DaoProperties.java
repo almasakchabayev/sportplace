@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class ConfigurationProperties {
-    private static final Logger logger = LoggerFactory.getLogger(ConfigurationProperties.class);
+public class DaoProperties {
+    private static final Logger logger = LoggerFactory.getLogger(DaoProperties.class);
 
     private static final String DAO_PROPERTIES_FILE = "/dao.properties";
     private static final Properties DAO_PROPERTIES = new java.util.Properties();
 
     static {
-        InputStream in = ConfigurationProperties.class.getResourceAsStream(DAO_PROPERTIES_FILE);
+        InputStream in = DaoProperties.class.getResourceAsStream(DAO_PROPERTIES_FILE);
         if (in == null) {
             ConfigurationException configurationException = new ConfigurationException(
-                    "ConfigurationProperties file '" + DAO_PROPERTIES_FILE + "' is missing in classpath.");
+                    "DaoProperties file '" + DAO_PROPERTIES_FILE + "' is missing in classpath.");
             logger.error(configurationException.getMessage(), configurationException);
             throw configurationException;
         }

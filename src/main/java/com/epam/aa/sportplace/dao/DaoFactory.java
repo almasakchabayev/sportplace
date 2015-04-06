@@ -13,7 +13,7 @@ public abstract class DaoFactory {
     private static Impl defaultImpl;
 
     public static void init(String impl) {
-        // null and empty string are checked in ConfigurationProperties class
+        // null and empty string are checked in DaoProperties class
         if (!Impl.isImpl(impl)) {
             DaoException daoException = new DaoException("Such implementation '" + impl + "' does not exist");
             logger.error(daoException.getMessage(), daoException);

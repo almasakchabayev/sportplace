@@ -19,7 +19,7 @@ public class JdbcConfig {
         URL resource = JdbcConfig.class.getResource(HIKARI_PROPERTIES_FILE);
         if (resource == null) {
             ConfigurationException configurationException = new ConfigurationException(
-                    "ConfigurationProperties file '" + HIKARI_PROPERTIES_FILE + "' is missing in classpath.");
+                    "DaoProperties file '" + HIKARI_PROPERTIES_FILE + "' is missing in classpath.");
             logger.error(configurationException.getMessage(), configurationException);
             throw configurationException;
         }

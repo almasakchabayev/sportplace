@@ -1,8 +1,10 @@
 package com.epam.aa.sportplace.model;
 
+
 import java.time.LocalDate;
 
 public abstract class User extends BaseEntity {
+
     private String firstName;
     private String lastName;
     private ContactInfo contactInfo; // email, address, contacts

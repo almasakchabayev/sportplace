@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.epam.com/aa/sportplace/customer"
+        xmlns:tns="http://www.epam.com/aa/sportplace/customer"
+        xmlns:uns="http://www.epam.com/aa/sportplace/user"
+        >
+    <include schemaLocation="user.xsd"></include>
+
+    <element name="customer">
+        <complexType>
+            <complexContent>
+                <element name="user" ref="uns:user"></element>
+            </complexContent>
+        </complexType>
+    </element>
+</schema>

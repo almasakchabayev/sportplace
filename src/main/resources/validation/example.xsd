@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="shoeSize">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minExclusive value="0" />
+                <xs:maxInclusive value="20" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="width">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="A" />
+                <xs:enumeration value="B" />
+                <xs:enumeration value="C" />
+                <xs:enumeration value="D" />
+                <xs:enumeration value="DD" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="brand">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="Nike" />
+                <xs:enumeration value="Adidas" />
+                <xs:enumeration value="Dr. Marten" />
+                <xs:enumeration value="V-Form" />
+                <xs:enumeration value="Mission" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="numEyelets">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+</xs:schema>

@@ -12,33 +12,33 @@ public class CustomerService {
         return new CreateCustomerPersistenceAction(customer).doAction();
     }
 
-    public Customer find(final Integer integer) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        return daoFactory.executeTx(factory -> {
-            CustomerDao customerDAO = factory.getCustomerDao();
-            return customerDAO.read(integer);
-        });
-    }
-
-    public boolean update(final Customer customer) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        return daoFactory.executeTx(new DaoCommand<Boolean>() {
-            public Boolean execute(DaoFactory daoFactory) {
-                CustomerDao customerDAO = daoFactory.getCustomerDao();
-                return customerDAO.update(customer);
-            }
-        });
-    }
-
-    public boolean delete(final Customer customer) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        return daoFactory.executeTx(new DaoCommand<Boolean>() {
-            public Boolean execute(DaoFactory daoFactory) {
-                CustomerDao customerDAO = daoFactory.getCustomerDao();
-                return customerDAO.delete(customer);
-            }
-        });
-    }
+//    public Customer find(final Integer integer) {
+//        DaoFactory daoFactory = DaoFactory.getInstance();
+//        return daoFactory.executeTx(factory -> {
+//            CustomerDao customerDAO = factory.getCustomerDao();
+//            return customerDAO.read(integer);
+//        });
+//    }
+//
+//    public boolean update(final Customer customer) {
+//        DaoFactory daoFactory = DaoFactory.getInstance();
+//        return daoFactory.executeTx(new DaoCommand<Boolean>() {
+//            public Boolean execute(DaoFactory daoFactory) {
+//                CustomerDao customerDAO = daoFactory.getCustomerDao();
+//                return customerDAO.update(customer);
+//            }
+//        });
+//    }
+//
+//    public boolean delete(final Customer customer) {
+//        DaoFactory daoFactory = DaoFactory.getInstance();
+//        return daoFactory.executeTx(new DaoCommand<Boolean>() {
+//            public Boolean execute(DaoFactory daoFactory) {
+//                CustomerDao customerDAO = daoFactory.getCustomerDao();
+//                return customerDAO.delete(customer);
+//            }
+//        });
+//    }
 
     private class CreateCustomerPersistenceAction extends PersistenceActionBase<Customer> {
 

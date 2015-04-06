@@ -17,7 +17,7 @@ public class JdbcDaoFactory extends DaoFactory {
     public JdbcDaoFactory() {
         if (dataSource == null) {
             DaoException daoException = new DaoException("dataSource is not defined, " +
-                    "need to ne initialized first in StartAppListener");
+                    "need to ne initialized first in AppListener");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
@@ -25,7 +25,7 @@ public class JdbcDaoFactory extends DaoFactory {
 
     public static void setDataSource(DataSource dataSource) {
         if (dataSource == null) {
-            DaoException daoException = new DaoException("DataSource failed to initialize in StartAppListener");
+            DaoException daoException = new DaoException("DataSource failed to initialize in AppListener");
             logger.error(daoException.getMessage(), daoException);
             throw daoException;
         }
@@ -85,6 +85,14 @@ public class JdbcDaoFactory extends DaoFactory {
             getConnection().commit();
             return result;
         }  catch (SQLException e) {
+            try {
+                this.connection.rollback();
+            } catch (SQLException e1) {
+                DaoException daoException = new DaoException(
+                        "Could not commit rolback transaction", e1);
+                logger.error(daoException.getMessage(), daoException);
+                throw daoException;
+            }
             DaoException daoException = new DaoException(
                     "Could not commit daoCommand", e);
             logger.error(daoException.getMessage(), daoException);
