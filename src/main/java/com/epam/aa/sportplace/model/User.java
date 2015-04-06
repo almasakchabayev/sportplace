@@ -1,18 +1,19 @@
 package com.epam.aa.sportplace.model;
 
 
+import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 
 public abstract class User extends BaseEntity {
-
     private String firstName;
     private String lastName;
     private ContactInfo contactInfo; // email, address, contacts
     //TODO: what to do about password?
-    private String PasswordHash;
+    private String passwordHash;
     //TODO: double check that for birthdays fine
     private LocalDate birthDate;
 
+    @XmlElement(name="firstName")
     public String getFirstName() {
         return firstName;
     }

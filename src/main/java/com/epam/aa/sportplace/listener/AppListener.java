@@ -1,7 +1,6 @@
 package com.epam.aa.sportplace.listener;
 
 import com.epam.aa.sportplace.dao.DaoFactory;
-import com.epam.aa.sportplace.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,6 @@ public class AppListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         initDaoFactory();
-        Validator.init();
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

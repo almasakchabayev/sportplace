@@ -2,6 +2,7 @@ package com.epam.aa.sportplace.servlet;
 
 import com.epam.aa.sportplace.model.Customer;
 import com.epam.aa.sportplace.service.CustomerService;
+import com.epam.aa.sportplace.validation.Validators;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,10 +27,8 @@ public class RegisterServlet extends HttpServlet {
         customer.setEmail(email);
         customer.addPhoneNumber(phoneNumber);
 
-        URL schemaUrl = this.getClass().getClassLoader().getResource("/validation/validation.xsd");
-        if (!Validator.getInstance(Customer).checkValidity(customer)) {
+        Validators.validate(customer);
 
-        }
         PrintWriter writer = response.getWriter();
         Integer id = new CustomerService().create(customer);
         writer.println(id);

@@ -1,16 +1,32 @@
 <?xml version="1.0"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://www.epam.com/aa/sportplace/customer"
-        xmlns:tns="http://www.epam.com/aa/sportplace/customer"
-        xmlns:uns="http://www.epam.com/aa/sportplace/user"
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         >
-    <include schemaLocation="user.xsd"></include>
 
-    <element name="customer">
-        <complexType>
-            <complexContent>
-                <element name="user" ref="uns:user"></element>
-            </complexContent>
-        </complexType>
-    </element>
-</schema>
+    <xsd:element name="customer">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="firstName" type="maxLength256" />
+                <xsd:element name="lastName" type="maxLength256" />
+                <xsd:element name="contactInfo" minOccurs="0" />
+                <xsd:element name="passwordHash" type="string-or-nothing" minOccurs="0" />
+                <xsd:element name="birthDate" type="dateTime-or-nothing" minOccurs="0" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:simpleType name="maxLength256">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="empty-string">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value=""/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="dateTime-or-nothing">
+        <xsd:union memberTypes="xsd:dateTime empty-string"/>
+    </xsd:simpleType>
+    <xsd:simpleType name="string-or-nothing">
+        <xsd:union memberTypes="xsd:string empty-string"/>
+    </xsd:simpleType>
+</xsd:schema>
