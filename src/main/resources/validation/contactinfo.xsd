@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:include schemaLocation="address.xsd"/>
+    <xsd:complexType name="contactInfo">
+        <xsd:all>
+            <xsd:element name="email" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="address" type="address" minOccurs="0"/>
+            <xsd:element name="phoneNumbers" type="stringList" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:simpleType name="stringList">
+        <xsd:list itemType="xsd:string" />
+    </xsd:simpleType>
+
+</xsd:schema>
