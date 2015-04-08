@@ -16,11 +16,11 @@ public class CustomerDaoJdbc implements CustomerDao {
         this.connection = connection;
     }
 
-    public Integer create(Customer customer) {
+    //TODO: need to catch errors eventually, cannot always rethrow them
+    public void create(Customer customer) {
         //TODO: create checks
         PreparedStatement pst = null;
         ResultSet rs = null;
-        Integer objectId = null;
 
         try {
             String stm = "INSERT INTO customer(first_name, last_name, birth_date) " +
@@ -38,9 +38,6 @@ public class CustomerDaoJdbc implements CustomerDao {
             pst.setDate(3, birthDateToStore);
 
             rs = pst.executeQuery();
-            while (rs.next()) objectId = rs.getInt(1);
-            logger.info("new Customer inserted {} with assigned id {}", customer, objectId);
-            return objectId;
         } catch (SQLException e) {
             //TODO: rethrow
             logger.error(e.getMessage(), e);
@@ -57,11 +54,9 @@ public class CustomerDaoJdbc implements CustomerDao {
                 logger.error(e.getMessage(), e);
             }
         }
-        //TODO: delete when added rethrows
-        return null;
     }
 
-    public Customer read(Integer id) {
+    public Customer find(Integer id) {
         PreparedStatement pst = null;
         ResultSet rs = null;
 
@@ -94,11 +89,9 @@ public class CustomerDaoJdbc implements CustomerDao {
         return null;
     }
 
-    public boolean update(Customer transientObject) {
-        return false;
+    public void update(Customer transientObject) {
     }
 
-    public boolean delete(Customer transientObject) {
-        return false;
+    public void delete(Customer transientObject) {
     }
 }

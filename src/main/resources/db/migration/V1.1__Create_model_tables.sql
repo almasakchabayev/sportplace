@@ -12,12 +12,12 @@
 --                 contact_info_id INT REFERENCES contact_info (id)
 -- );
 CREATE TABLE contact_info (
-                id SERIAL PRIMARY KEY,
+                id BIGSERIAL PRIMARY KEY,
                 deleted BOOLEAN DEFAULT FALSE,
                 email TEXT
 );
 CREATE TABLE customer (
-                id SERIAL PRIMARY KEY,
+                id BIGSERIAL PRIMARY KEY,
                 deleted BOOLEAN DEFAULT FALSE,
                 first_name TEXT,
                 last_name VARCHAR(25),

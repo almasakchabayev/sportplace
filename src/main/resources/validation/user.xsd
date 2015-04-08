@@ -6,24 +6,13 @@
             <xsd:element name="firstName" type="maxLength256" />
             <xsd:element name="lastName" type="maxLength256" />
             <xsd:element name="contactInfo" minOccurs="0" />
-            <xsd:element name="passwordHash" type="string-or-nothing" minOccurs="0" />
-            <xsd:element name="birthDate" type="dateTime-or-nothing" minOccurs="0" />
+            <xsd:element name="password" type="xsd:string" minOccurs="0" />
+            <xsd:element name="birthDate" type="xsd:date" minOccurs="0" />
         </xsd:all>
     </xsd:complexType>
     <xsd:simpleType name="maxLength256">
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="256" />
         </xsd:restriction>
-    </xsd:simpleType>
-    <xsd:simpleType name="empty-string">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value=""/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    <xsd:simpleType name="dateTime-or-nothing">
-        <xsd:union memberTypes="xsd:dateTime empty-string"/>
-    </xsd:simpleType>
-    <xsd:simpleType name="string-or-nothing">
-        <xsd:union memberTypes="xsd:string empty-string"/>
     </xsd:simpleType>
 </xsd:schema>

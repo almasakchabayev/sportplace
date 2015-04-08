@@ -8,15 +8,15 @@ import com.epam.aa.sportplace.model.Customer;
 public class CustomerService {
     private CustomerDao customerDao;
 
-    public Integer create(Customer customer) {
-        return new CreateCustomerPersistenceAction(customer).doAction();
+    public static void create(Customer customer) {
+        new CreateCustomerPersistenceAction(customer).doAction();
     }
 
 //    public Customer find(final Integer integer) {
 //        DaoFactory daoFactory = DaoFactory.getInstance();
 //        return daoFactory.executeTx(factory -> {
 //            CustomerDao customerDAO = factory.getCustomerDao();
-//            return customerDAO.read(integer);
+//            return customerDAO.find(integer);
 //        });
 //    }
 //
@@ -40,15 +40,16 @@ public class CustomerService {
 //        });
 //    }
 
-    private class CreateCustomerPersistenceAction extends PersistenceActionBase<Customer> {
+    private static class CreateCustomerPersistenceAction extends PersistenceActionBase<Customer> {
 
         public CreateCustomerPersistenceAction(Customer customer) {
             super(customer);
         }
 
-        protected Integer doPersistenceAction(DaoFactory daoFactory) {
+        protected Object doPersistenceAction(DaoFactory daoFactory) {
             CustomerDao customerDAO = daoFactory.getCustomerDao();
-            return customerDAO.create(super.e);
+            customerDAO.create(super.e);
+            return null;
         }
     }
 }

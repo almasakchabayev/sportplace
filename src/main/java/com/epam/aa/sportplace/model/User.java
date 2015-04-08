@@ -9,7 +9,7 @@ public abstract class User extends BaseEntity {
     private String lastName;
     private ContactInfo contactInfo; // email, address, contacts
     //TODO: what to do about password?
-    private String passwordHash;
+    private String password;
     //TODO: double check that for birthdays fine
     private LocalDate birthDate;
 
@@ -55,5 +55,13 @@ public abstract class User extends BaseEntity {
     public void addPhoneNumber(String phoneNumber) {
         if (contactInfo == null) contactInfo = new ContactInfo();
         contactInfo.addPhoneNumber(phoneNumber);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
